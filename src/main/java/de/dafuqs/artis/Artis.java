@@ -9,7 +9,9 @@ import net.fabricmc.fabric.api.networking.v1.*;
 import net.minecraft.registry.*;
 import net.minecraft.screen.*;
 import net.minecraft.util.*;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Artis implements ModInitializer {
 	
@@ -35,14 +37,12 @@ public class Artis implements ModInitializer {
 		Registry.register(Registries.ITEM_GROUP, ArtisItemGroups.ARTIS_GROUP_ID, ArtisItemGroups.ARTIS_GROUP);
 		
 		//seems to be required to not have the recipe vanish when initially opened
-		ServerPlayNetworking.registerGlobalReceiver(Artis.REQUEST_SYNC_IDENTIFIER, (server, player, handler, buf, responseSender) -> {
-			server.execute(() -> {
-				ScreenHandler container = player.currentScreenHandler;
-				if (container instanceof ArtisRecipeProvider) {
-					container.onContentChanged(null);
-				}
-			});
-		});
+		ServerPlayNetworking.registerGlobalReceiver(Artis.REQUEST_SYNC_IDENTIFIER, (server, player, handler, buf, responseSender) -> server.execute(() -> {
+            ScreenHandler container = player.currentScreenHandler;
+            if (container instanceof ArtisRecipeProvider) {
+                container.onContentChanged(null);
+            }
+        }));
 	}
 	
 }

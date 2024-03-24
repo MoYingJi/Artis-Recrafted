@@ -7,7 +7,7 @@ import net.fabricmc.loader.api.*;
 import net.minecraft.block.*;
 import net.minecraft.registry.*;
 import net.minecraft.util.*;
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.Level;
 import org.jetbrains.annotations.*;
 
 import java.io.*;
@@ -21,12 +21,7 @@ public class ArtisConfig {
 		try {
 			File file = FabricLoader.getInstance().getConfigDir().resolve("artis-recrafted.json5").toFile();
 			if (!file.exists()) {
-				Artis.log(Level.WARN, "Config file not found! Generating an empty file.");
-				file.createNewFile();
-				FileOutputStream out = new FileOutputStream(file, false);
-				out.write(DEFAULT_CONFIG.getBytes());
-				out.flush();
-				out.close();
+				Artis.log(Level.WARN, "Config file not found!");
 				return;
 			}
 			
@@ -196,73 +191,4 @@ public class ArtisConfig {
 	private static @NotNull Integer extractColor(@NotNull JsonObject json) {
 		return Integer.decode(JsonHelper.getString(json, "color").replace("#", "0x"));
 	}
-	
-	private static final String DEFAULT_CONFIG = """
-{
-  "minecraft:fletching_table": {
-    "type": "existing_block",
-    "normal_recipes": true,
-    "width": 1,
-    "height": 3,
-    "catalyst_slot": true
-  },
-  "minecraft:stick": {
-    "type": "existing_item",
-    "width": 2,
-    "height": 3,
-    "catalyst_slot": false
-  },
-  "test_table43": {
-    "display_name": "Test Table 4x3",
-    "width": 4,
-    "height": 3,
-    "block_entity": true,
-    "settings": {
-      "copy": "minecraft:crafting_table",
-      "non_opaque": true,
-      "hardness": 4,
-      "resistance": 3
-    },
-    "requires_tool": true,
-    "tags": [
-      "minecraft:blocks/needs_stone_tool",
-      "minecraft:blocks/mineable/pickaxe"
-    ]
-  },
-  "test_table66": {
-    "display_name": "Test Table 6x6",
-    "width": 6,
-    "height": 6,
-    "normal_recipes": true,
-    "block_entity": false,
-    "color": "#7F76D1",
-    "settings": {
-      "material": "wood",
-      "non_opaque": true
-    },
-    "catalyst_slot": true,
-    "tags": [
-      "minecraft:blocks/needs_stone_tool",
-      "minecraft:blocks/mineable/pickaxe"
-    ]
-  },
-  "test_table77": {
-    "display_name": "Test Table 7x7",
-    "width": 7,
-    "height": 7,
-    "block_entity": true,
-    "color": "#7F76D1",
-    "settings": {
-      "material": "wood",
-      "non_opaque": true
-    },
-    "catalyst_slot": true,
-    "tags": [
-      "minecraft:blocks/needs_stone_tool",
-      "minecraft:blocks/mineable/pickaxe"
-    ]
-  }
-}
-""";
-	
 }
